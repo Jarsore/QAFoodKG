@@ -1,0 +1,4 @@
+{"_id":{"$oid":"1"},"name":"红烧肉","ingredients":["猪肉","酱油"],"restaurant":"湖南菜馆","chef":"王师傅","cuisine":"湘菜","flavor":"甜咸"}
+{"_id":{"$oid":"2"},"name":"葡式蛋挞","ingredients": ["鸡蛋","蛋挞皮"],"restaurant": "麦香人家","chef": "李师傅","cuisine": "西餐","flavor": "甜"}
+{"_id":{"$oid":"3"},"name":"寿司","ingredients": ["海苔","米饭"],"restaurant": "日料店","chef": "王师傅","cuisine": "日料","flavor": "咸"}
+{"_id":{"$oid":"4"},"name":"鱼香肉丝","ingredients": ["肉丝","茄子"],"restaurant": "沙县小吃","chef": "徐师傅","cuisine": "川菜","flavor": "咸"}
