@@ -2,7 +2,7 @@
 # coding=utf-8
 # programmer:Jarsore,04/09/2024
 
-# 解析
+# 问句解析
 
 class QuestionPaser:
 
@@ -15,64 +15,62 @@ class QuestionPaser:
                     entity_dict[type] = [arg]
                 else:
                     entity_dict[type].append(arg)
+
+        # print(entity_dict)
         return entity_dict
-
-
 
     '''解析主函数'''
     def parser_main(self, res_classify):
 
         args = res_classify['args']
-        entity_dict = self.build_entitydict(args)#调用上面的构造实体节点函数
-        question_types = res_classify['question_types']#需要question_classifier.py完成问题类型的识别
+        entity_dict = self.build_entitydict(args) # 调用上面的构造实体节点函数
+        question_types = res_classify['question_types'] # 需要question_classifier.py完成问题类型的识别
         sqls = []
 
         for question_type in question_types:
-            sql_ = {}#注意与下面sql的区别，字典
+            sql_ = {} # 注意与下面sql的区别，字典
             sql_['question_type'] = question_type
             sql = []
 
-
+            # dish_restaurant：某个菜肴在哪家餐厅卖？
             if question_type == 'dish_restaurant':
-                sql = self.sql_transfer(question_type, entity_dict.get('restaurant'))#sql_transfer是下面定义的分开处理问题子函数
+                sql = self.sql_transfer(question_type, entity_dict.get('restaurant')) # sql_transfer是下面定义的分开处理问题子函数
 
+            # restaurant_dish：某个餐馆卖什么美食？
             elif question_type == 'restaurant_dish':
                 sql = self.sql_transfer(question_type, entity_dict.get('dish'))
 
             elif question_type == 'dish_ingredient':
                 sql = self.sql_transfer(question_type, entity_dict.get('ingredient'))
 
-            # ...
-
             elif question_type == 'dish_chef':
                 sql = self.sql_transfer(question_type, entity_dict.get('chef'))
+
             elif question_type == 'dish_cuisine':
                 sql = self.sql_transfer(question_type, entity_dict.get('cuisine'))
+
             elif question_type == 'dish_flavor':
                 sql = self.sql_transfer(question_type, entity_dict.get('flavor'))
-
-
-
 
             elif question_type == 'dish_desc':
                 sql = self.sql_transfer(question_type, entity_dict.get('dish'))
 
-            elif question_type == 'dish_restaurant':
-                sql = self.sql_transfer(question_type, entity_dict.get('restaurant'))
-
-
+            # elif question_type == 'dish_restaurant':
+            #     sql = self.sql_transfer(question_type, entity_dict.get('restaurant'))
 
             if sql:
                 sql_['sql'] = sql
 
                 sqls.append(sql_)
-
+        # print(sqls)
         return sqls#返回sql查询语句，可以是多条，给图谱
 
 
     '''针对不同的问题，分开进行处理'''
     def sql_transfer(self, question_type, entities):
         if not entities:
+            # entities：实体，但是这里没有显示实体
+            # print(entities)
             return []
 
         # 查询语句
@@ -81,15 +79,32 @@ class QuestionPaser:
 
         # 查询售卖该菜肴的餐馆，在debug的时候，运行到对应的elif（说明已经找到合适的关系）会自动停止该函数的执行
         if question_type == 'dish_restaurant':
-            sql = ["MATCH (m:Restaurant) where m.name = '{0}' return m.name, m.cause".format(i) for i in entities]#调用match语句
+            # 查询某个食物有哪个餐厅卖？
+            sql = ["MATCH (m:Restaurant) where m.name = '{0}' return m.name, m.restaurant".format(i) for i in entities]#调用match语句
+            # sql = ["MATCH (m:Dish)-[r:now_sell]->(n:Restaurant) where m.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
 
         # 查询某个餐厅卖什么食物
         elif question_type == 'restaurant_dish':
-            sql = ["MATCH (m:Dish) where m.name = '{0}' return m.name, m.prevent".format(i) for i in entities]
+            sql = ["MATCH (m:Dish) where m.name = '{0}' return m.name, m.restaurant".format(i) for i in entities]#调用match语句
+            # sql = ["MATCH (m:Restaurant)-[r:now_sell]->(n:Dish) where m.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
 
+        elif question_type == 'dish_ingredient': # 食材
 
+            sql = ["MATCH (m:Dish)-[r:need_thing]->(n:Ingredient) where m.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
 
+        elif question_type == 'dish_chef': # 厨师
+            sql = ["MATCH (m:Chef) where m.name = '{0}' return m.name, m.chef".format(i) for i in entities]#调用match语句
+            # sql = ["MATCH (m:Dish)-[r:make_peo]->(n:Chef) where m.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
 
+        elif question_type == 'dish_cuisine': # 菜系
+            sql = ["MATCH (m:Cuisine) where m.name = '{0}' return m.name, m.cuisine".format(i) for i in entities]#调用match语句
+            # sql = ["MATCH (m:Dish)-[r:belong_to]->(n:Cuisine) where m.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
+
+        elif question_type == 'dish_flavor': # 口味
+            sql = ["MATCH (m:Flavor) where m.name = '{0}' return m.name, m.flavor".format(i) for i in entities]#调用match语句
+            # sql = ["MATCH (m:Dish)-[r:taste_like]->(n:Flavor) where m.name = '{0}' return m.name, r.name, n.name".format(i) for i in entities]
+
+        print(sql)
         return sql
 
 
