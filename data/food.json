@@ -1,0 +1,16 @@
+{"_id":{"$oid":"001"},"name":"红烧肉","ingredients":["猪肉","酱油"],"restaurant":"湖南菜馆","chef":"王石","cuisine":"湖南菜","flavor":"甜咸"}
+{"_id":{"$oid":"002"},"name":"葡式蛋挞","ingredients": ["鸡蛋","蛋挞皮"],"restaurant": "麦香人家","chef": "李一","cuisine": "西餐","flavor": "甜"}
+{"_id":{"$oid":"003"},"name":"寿司","ingredients": ["海苔","米饭"],"restaurant": "日料店","chef": "李斯","cuisine": "日料","flavor": "咸"}
+{"_id":{"$oid":"004"},"name":"鱼香肉丝","ingredients": ["肉丝","茄子"],"restaurant": "沙县小吃","chef": "徐雷","cuisine": "四川菜","flavor": "咸"}
+{"_id":{"$oid":"005"},"name":"扒肉条","ingredients": ["猪腿肉","香菜"],"restaurant": "回民菜馆","chef": "杨迪","cuisine": "山西菜","flavor": "甜咸"}
+{"_id":{"$oid":"006"},"name":"大同烧肉","ingredients": ["五花肉"],"restaurant": "大同小吃","chef": "徐大","cuisine": "山西菜","flavor": "咸"}
+{"_id":{"$oid":"007"},"name":"万字扣肉","ingredients": ["五花肉","胡萝卜","芹菜"],"restaurant": "喵·食物语空桑小馆","chef": "严一一","cuisine": "河北菜","flavor": "咸"}
+{"_id":{"$oid":"008"},"name":"梅干菜扣肉","ingredients": ["五花肉","梅菜"],"restaurant": "沙县小吃","chef": "徐老三","cuisine": "浙江菜","flavor": "咸"}
+{"_id":{"$oid":"009"},"name":"沧州老席白肉","ingredients": ["肥猪肉"],"restaurant": "沧州老席","chef": "沙师傅","cuisine": "河北菜","flavor": "咸"}
+{"_id":{"$oid":"010"},"name":"锅包肘子","ingredients": ["肘子"],"restaurant": "保定官府菜","chef": "成师傅","cuisine": "河北菜","flavor": "咸鲜"}
+{"_id":{"$oid":"011"},"name":"清酱肉","ingredients": ["腊肉"],"restaurant": "沙县小吃","chef": "勇师傅","cuisine": "北京菜","flavor": "咸"}
+{"_id":{"$oid":"012"},"name":"延边米肠","ingredients": ["鲜猪血","猪大肠","糯米"],"restaurant": "韩食府","chef": "尹师傅","cuisine": "吉林菜","flavor": "咸"}
+{"_id":{"$oid":"013"},"name":"文思豆腐","ingredients": ["豆腐","冬笋","鸡胸脯肉","火腿","香菇","生菜"],"restaurant": "扬州早点","chef": "徐大","cuisine": "江苏菜","flavor": "鲜香可口"}
+{"_id":{"$oid":"014"},"name":"皮蛋瘦肉粥","ingredients": ["皮蛋","瘦肉丝","大米"],"restaurant": "点都德","chef": "李三","cuisine": "广东菜","flavor": "咸鲜"}
+{"_id":{"$oid":"015"},"name":"砂锅米线","ingredients": ["米线","香菇","木耳","豆腐皮","金针菇"],"restaurant": "状元郎米线","chef": "王二","cuisine": "云南菜","flavor": "咸"}
+{"_id":{"$oid":"016"},"name":"银鱼紫蟹火锅","ingredients": ["银鱼","紫蟹","酸菜"],"restaurant": "红旗饭庄","chef": "徐小四","cuisine": "天津菜","flavor": "咸"}
