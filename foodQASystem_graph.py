@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 # programmer:Jarsore,04/09/2024
+# code url:
 
 from question_classifier import *
 from question_parser import *
@@ -37,7 +38,7 @@ class FoodQASystemGraph:
 if __name__ == '__main__':
     handler = FoodQASystemGraph()
     while 1: # 进入一个死循环
-        question = input('用户咨询:')
+        question = input('用户美食咨询:')
         answer = handler.chat_main(question)
         print('美食问答系统:', answer)
 
