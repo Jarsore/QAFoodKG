@@ -43,11 +43,13 @@ class QuestionClassifier:
 
         '''
         可能出现的问句：
+        
         1.红烧肉哪家餐馆有卖？
         2.红烧肉的原材料是啥？
         3.做红烧肉的人是谁？
         4.红烧肉是哪儿的菜？
         5.红烧肉是什么味道？
+        
         6.有什么好吃的菜
         '''
 
@@ -81,7 +83,7 @@ class QuestionClassifier:
         # 收集问句当中所涉及到的实体类型
         types = []
 
-        # for type_ in medical_dict.values():
+
         for type_ in food_dict.values():
             types += type_
 
@@ -95,10 +97,10 @@ class QuestionClassifier:
             # 前面检测问句中是否有餐厅疑问词，and后面是收集问句中出现的实体类型
             question_type = 'dish_restaurant'
             question_types.append(question_type)
-        # 某个餐厅卖什么菜肴？
-        if self.check_words(self.dish_qwds, question) and ('restaurant' in types): # check_words是下面定义的特征词分类函数
-            question_type = 'restaurant_dish'
-            question_types.append(question_type)
+        # # 某个餐厅卖什么菜肴？
+        # if self.check_words(self.dish_qwds, question) and ('restaurant' in types): # check_words是下面定义的特征词分类函数
+        #     question_type = 'restaurant_dish'
+        #     question_types.append(question_type)
 
         # 食材_ingredient
         # 某个美食需要哪些食材来制作？
@@ -115,6 +117,7 @@ class QuestionClassifier:
         # 地方菜_cuisine
         # 某个美食是哪儿的地方菜？
         if self.check_words(self.cuisine_qwds, question) and ('dish' in types):
+
             question_type = 'dish_cuisine'
             question_types.append(question_type)
 
@@ -143,23 +146,28 @@ class QuestionClassifier:
     def build_wdtype_dict(self):
         wd_dict = dict()
 
-        for wd in self.region_words: # 找到用户输入的词是什么范围的，比如用户输入高血压，这个单词属于疾病？食物？科室？还是药物
+        for wd in self.region_words: # 找到用户输入的词是什么范围的，比如用户输入寿司，这个单词属于美食？餐厅？菜系？还是口味
             wd_dict[wd] = []
 
             # 判断用户问句中的特征词
             if wd in self.dish_wds:
                 wd_dict[wd].append('dish')
+
             if wd in self.restaurant_wds:
                 wd_dict[wd].append('restaurant')
+
             if wd in self.ingredient_wds:
                 wd_dict[wd].append('ingredient')
+
             if wd in self.chef_wds:
                 wd_dict[wd].append('chef')
+
             if wd in self.cuisine_wds:
                 wd_dict[wd].append('cuisine')
+
             if wd in self.flavor_wds:
                 wd_dict[wd].append('flavor')
-
+        print(wd_dict)
         return wd_dict
 
     '''构造actree，加速过滤'''
