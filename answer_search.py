@@ -7,6 +7,8 @@
 from py2neo import Graph
 
 class AnswerSearcher:
+
+
     def __init__(self):#调用数据库进行查询
         # self.g = Graph("http://localhost:7474", username="neo4j", password="wang1985")#老版本neo4j
         self.g = Graph("http://localhost:7474", auth=("neo4j", "Neo4j2020."))#输入自己修改的用户名，密码
@@ -27,7 +29,7 @@ class AnswerSearcher:
 
             for query in queries:
 
-                ress = self.g.run(query).data() # 运行图数据库
+                ress = self.g.run(query).data() # 运行图数据库，进行查询
 
                 answers += ress
 
@@ -58,40 +60,49 @@ class AnswerSearcher:
         if question_type == 'dish_restaurant':
 
             desc = [i['m.name'] for i in answers]
-            subject = answers[0]['m.name']
+            subject = answers[0]['m.restaurant']
             final_answer = '餐厅{0}售卖的美食有：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
 
-        elif question_type == 'restaurant_dish':
-
-            desc = [i['m.name'] for i in answers]
-            subject = answers[0]['m.name']
-            final_answer = '有美食{0}售卖的餐厅有：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
+        # elif question_type == 'restaurant_dish':
+        #
+        #     desc = [i['m.name'] for i in answers]
+        #     subject = answers[0]['n.name']
+        #     final_answer = '有美食{0}售卖的餐厅有：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
 
 
         elif question_type == 'dish_ingredient':
 
-            desc = [i['n.ingredient'] for i in answers]
+            desc = [i['n.name'] for i in answers] # 这段代码待定
             subject = answers[0]['m.name']
             final_answer = '{0}的食材包括：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
             # 上一行代码中的{0}指代subject
 
         elif question_type == 'dish_chef':
 
-            desc = [i['m.chef'] for i in answers]
-            subject = answers[0]['m.name']
+            desc = [i['m.name'] for i in answers]
+            subject = answers[0]['m.chef']
             final_answer = '厨师{0}会做的菜肴有：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
 
+
+
+        # 交换m后面位置
         elif question_type == 'dish_cuisine':
 
-            desc = [i['m.cuisine'] for i in answers]
-            subject = answers[0]['m.name']
-            final_answer = '美食{0}来自菜系：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
+            desc = [i['m.name'] for i in answers]
+            subject = answers[0]['m.cuisine']
+            final_answer = '美食{1}来自菜系：{0}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
 
         elif question_type == 'dish_flavor':
 
-            desc = [i['m.flavor'] for i in answers]
-            subject = answers[0]['m.name']
-            final_answer = '美食{0}的口味是：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
+            desc = [i['m.name'] for i in answers]
+            subject = answers[0]['m.cuisine']
+            final_answer = '美食{1}的口味是：{0}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
+
+        elif question_type == 'dish_dec':
+            final_answer = "恭喜发财"
+
+
+
 
         return final_answer
 
