@@ -2,6 +2,8 @@
 # coding=utf-8
 # programmer:Jarsore,04/03/2024
 
+# 建立美食知识图谱
+
 import os
 import json
 from py2neo import Graph, Node
@@ -43,6 +45,7 @@ class FoodGraph:
             count += 1
             print(count)
             data_json = json.loads(data) #读取数据
+
             dish = data_json['name']
             dish_dict['name'] = dish #美食字典的name是dish
             dishes.append(dish) #
@@ -52,6 +55,7 @@ class FoodGraph:
             dish_dict['chef'] = ''
             dish_dict['cuisine'] = '' #菜系
             dish_dict['flavor'] = '' #口味
+            dish_dict['dec'] = ''
 
             # 查找一下词条是否在提取出来的文档段中，每一条文档段内容长度不一
             # 根据业务需求添加属性和关系
@@ -68,7 +72,9 @@ class FoodGraph:
                 dish_dict['restaurant'] = data_json['restaurant']
 
                 restaurant = data_json['restaurant']
+
                 restaurants.append(restaurant)
+
                 rels_dish_restaurant.append([dish, restaurant])
 
             if 'chef' in data_json: #厨师
@@ -76,7 +82,9 @@ class FoodGraph:
                 dish_dict['chef'] = data_json['chef']
 
                 chef = data_json['chef']
+
                 chefs.append(chef)
+
                 rels_dish_chef.append([dish, chef])
                 rels_restaurant_chef.append([restaurant, chef])
 
@@ -95,6 +103,9 @@ class FoodGraph:
                 flavor = data_json['flavor']
                 flavors.append(flavor)
                 rels_dish_flavor.append([dish, flavor])
+
+            if 'dec' in data_json:
+                dish_dict['dec'] = data_json['dec']
 
             dish_infos.append(dish_dict) #添加美食信息list，dish_infos是一个列表，dish_dict是一个字典
         # print(dish_infos)
@@ -144,13 +155,13 @@ class FoodGraph:
         # print(dish_infos)
         for dish_dict in dish_infos:
             # print(dish_dict)
-            node = Node("Food",
+            node = Node("Dish",
                         name=dish_dict['name'],# 名字
-                        # restaurants=dish_dict['restaurant'], # 餐厅
-                        # ingredients = dish_dict['ingredients'],  # 食材
-                        # chefs = dish_dict['chef'],  # 厨师
-                        cuisines = dish_dict['cuisine'],  # 菜系
-                        flavors = dish_dict['flavor'],  # 口味
+                        restaurant=dish_dict['restaurant'], # 餐厅
+                        ingredient = dish_dict['ingredients'],  # 食材
+                        chef = dish_dict['chef'],  # 厨师
+                        cuisine = dish_dict['cuisine'],  # 菜系
+                        flavor = dish_dict['flavor'],  # 口味
                         )#各个美食节点的属性
             self.g.create(node)
             count += 1
@@ -190,6 +201,7 @@ class FoodGraph:
         print(len(Cuisines))
         self.create_node('Flavor', Flavors)
         print(len(Flavors))
+
         return
 
 
@@ -258,7 +270,10 @@ class FoodGraph:
         rels_dish_flavor, \
         rels_restaurant_chef = self.read_nodes()
 
+        print(Dishes)
+
         f_dish = open('dish.txt', 'w+')
+        print(1)
         f_restaurant = open('restaurant.txt', 'w+')
         f_ingredient = open('ingredient.txt', 'w+')
         f_chef = open('chef.txt', 'w+')
@@ -266,6 +281,7 @@ class FoodGraph:
         f_flavor = open('flavor.txt', 'w+')
 
         f_dish.write('\n'.join(list(Dishes)))
+        print(2)
         f_restaurant.write('\n'.join(list(Restaurants)))
         f_ingredient.write('\n'.join(list(Ingredients)))
         f_chef.write('\n'.join(list(Chefs)))
@@ -273,6 +289,7 @@ class FoodGraph:
         f_flavor.write('\n'.join(list(Flavors)))
 
         f_dish.close()
+        print(3)
         f_restaurant.close()
         f_ingredient.close()
         f_chef.close()
@@ -284,6 +301,16 @@ class FoodGraph:
 
 if __name__ == '__main__':
     handler = FoodGraph()
+
+    print("step1:导入图谱节点中")
     handler.create_graphnodes() #创建节点
+
+    print("step2:导入图谱边中")
     handler.create_graphrels() # 创建关系
+
+    print("step3:导出数据中")
+    handler.export_data()
+
+
+
 
