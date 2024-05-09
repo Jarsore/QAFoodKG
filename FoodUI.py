@@ -6,38 +6,76 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from foodQAsystem_graph import *
+from PyQt5.QtGui import QPixmap,QPalette
+from PyQt5.QtGui import QIcon
+
 
 class MyWindow(QWidget):
 
     def __init__(self):
         super(MyWindow, self).__init__()
-        self.background_path = r"D:\Documents\QAFoodKG\bkg.png"
+
+        self.background_path = r"D:\Documents\QAFoodKG\rice.jpg"
+
         self.init_UI()
 
 
     def init_UI(self):
         # 设置窗口大小
-        self.setFixedSize(680, 600)
+        # self.setFixedSize(680, 600)
+        self.setFixedSize(960, 640)
+        self.setWindowIcon(QIcon('Logo.ico'))
         self.setBackground()
-        # 创建一个只读文本框【回复】
-        self.text_edit_reply = QTextEdit(self)
-        self.text_edit_reply.setReadOnly(True)
-        self.text_edit_reply.setText("sgbdasihdbuaiks")
-        self.text_edit_reply.setGeometry(QRect(100,100,300,70))#x,y,width,height
 
         # 创建一个文本输入框【输入】
         self.text_eidt_query = QTextEdit(self)
-        self.text_eidt_query.setGeometry(QRect(100,180,300,70))
-        self.text_eidt_query.setPlaceholderText("请输入")
+        self.text_eidt_query.setGeometry(QRect(70,100,300,70))
+        self.text_eidt_query.setPlaceholderText("用户美食咨询，请输入：")
+
+        # 创建一个只读文本框【回复】
+        self.text_edit_reply = QTextEdit(self)
+        self.text_edit_reply.setReadOnly(True)
+        self.text_edit_reply.setText("兰陵美酒郁金香，玉碗盛来琥珀光")
+        self.text_edit_reply.setGeometry(QRect(70,180,300,70))#x,y,width,height
 
         # 创建并设置发送按钮
-        self.btn_send = QPushButton("Send", self)
-        self.btn_send.setGeometry(QRect(300, 280, 100, 40))  # 设置位置和大小
+        self.btn_send = QPushButton("确定", self)
+        self.btn_send.setGeometry(QRect(450, 100, 100, 150))  # 设置位置和大小
         self.btn_send.clicked.connect(self.on_send_click)  # 连接点击信号
+
         # 显示窗口
         self.show()
+
     def setBackground(self):
-        self.setStyleSheet(f"background-image: url({self.background_path});")
+
+        # self.setStyleSheet(f"background-image: url({self.background_path});")
+
+        # # 加载背景图片
+        # pixmap = QPixmap(self.background_path)
+        # # 设置窗口背景
+        # self.setPalette(QPalette(Qt.transparent))
+        # self.setAutoFillBackground(False)
+        # self.label = QLabel(self)
+        # self.label.setPixmap(pixmap)
+        # self.label.setAlignment(Qt.AlignCenter)
+        # layout = QVBoxLayout()
+        # layout.addWidget(self.label)
+        # self.setLayout(layout)
+
+
+        self.setPalette(QPalette(Qt.transparent))  # 设置窗口背景为透明
+        self.setAutoFillBackground(False)  # 禁用自动填充背景
+        pixmap = QPixmap(self.background_path)
+        self.label = QLabel(self)
+        self.label.setPixmap(pixmap.scaled(self.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setStyleSheet('background-color: transparent;')  # 设置标签背景透明
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)  # 设置布局边距为0
+        layout.addWidget(self.label)
+        self.setStyleSheet('background-color: transparent;')  # 设置窗口背景透明
+
+
     def on_send_click(self):
         # 这里可以定义点击发送按钮时的行为
         print("Send button clicked")
@@ -51,6 +89,7 @@ class MyWindow(QWidget):
 
 
 if __name__ == '__main__':
+
     app = QApplication(sys.argv)
     w = MyWindow()
     # 设置窗口标题
