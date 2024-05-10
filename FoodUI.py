@@ -6,6 +6,9 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from foodQAsystem_graph import *
+from question_classifier import *
+from question_parser import *
+from answer_search import *
 from PyQt5.QtGui import QPixmap,QPalette
 from PyQt5.QtGui import QIcon
 
@@ -37,6 +40,12 @@ class MyWindow(QWidget):
         self.text_edit_reply.setReadOnly(True)
         self.text_edit_reply.setText("兰陵美酒郁金香，玉碗盛来琥珀光")
         self.text_edit_reply.setGeometry(QRect(70,180,300,70))#x,y,width,height
+
+        # 创建一个查询语句显示框
+        self.text_edit_cypher = QTextEdit(self)
+        self.text_edit_cypher.setReadOnly(True)
+        self.text_edit_cypher.setText("查询语句显示")
+        self.text_edit_cypher.setGeometry(QRect(10, 580, 700, 50))  # x,y,width,height
 
         # 创建并设置发送按钮
         self.btn_send = QPushButton("确定", self)
@@ -82,10 +91,25 @@ class MyWindow(QWidget):
         text_query = self.text_eidt_query.toPlainText()
         print("text_query=",text_query," type=",type(text_query))
         # self.text_eidt_query.clear()
+
+
+
+        # 实例化问答系统并获取答案和SQL语句
         handler = FoodQASystemGraph()
-        answer = handler.chat_main(text_query)
+
+        # answer = handler.chat_main(text_query)
+        result = handler.chat_main(text_query)
+
+
+        # 清空并设置查询语句文本框
+        self.text_edit_cypher.clear()
+        self.text_edit_cypher.setText(str(result['res_sql']))
+        # 清空并设置回答文本框
         self.text_edit_reply.clear()
-        self.text_edit_reply.setText(answer)
+        self.text_edit_reply.setText(str(result['answer']))
+
+        # self.text_edit_reply.clear()
+        # self.text_edit_reply.setText(answer)
 
 
 if __name__ == '__main__':
